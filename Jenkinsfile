@@ -2,17 +2,17 @@ pipeline {
     agent any
 
     environment {
-        DEPLOY_DIR = "${WORKSPACE}/deploy"
+        DEPLOY_DIR = "${WORKSPACE}\deploy"
     }
 
     stages {
         stage('Build') {
             steps {
                 echo 'Installing dependencies...'
-                sh '''
-                    python3 -m venv venv
-                    . venv/bin/activate
-                    pip install --upgrade pip
+                bat '''
+                    python -m venv venv
+                    call venv\Scripts\activate.bat
+                    python -m pip install --upgrade pip
                     pip install -r requirements.txt
                 '''
             }
@@ -21,8 +21,8 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running unit tests...'
-                sh '''
-                    . venv/bin/activate
+                bat '''
+                    call venv\Scripts\activate.bat
                     python -m unittest discover -v
                 '''
             }
@@ -31,10 +31,11 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Copying application to deployment directory...'
-                sh '''
-                    mkdir -p "$DEPLOY_DIR"
-                    cp app.py requirements.txt "$DEPLOY_DIR/"
-                    ls -l "$DEPLOY_DIR"
+                bat '''
+                    if not exist "%DEPLOY_DIR%" mkdir "%DEPLOY_DIR%"
+                    copy /Y app.py "%DEPLOY_DIR%\\"
+                    copy /Y requirements.txt "%DEPLOY_DIR%\\"
+                    dir "%DEPLOY_DIR%"
                 '''
             }
         }
