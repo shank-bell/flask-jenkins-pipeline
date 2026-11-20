@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DEPLOY_DIR = "${WORKSPACE}\deploy"
+        DEPLOY_DIR = 'deploy'
     }
 
     stages {
@@ -11,7 +11,7 @@ pipeline {
                 echo 'Installing dependencies...'
                 bat '''
                     python -m venv venv
-                    call venv\Scripts\activate.bat
+                    call venv\\Scripts\\activate.bat
                     python -m pip install --upgrade pip
                     pip install -r requirements.txt
                 '''
@@ -22,7 +22,7 @@ pipeline {
             steps {
                 echo 'Running unit tests...'
                 bat '''
-                    call venv\Scripts\activate.bat
+                    call venv\\Scripts\\activate.bat
                     python -m unittest discover -v
                 '''
             }
