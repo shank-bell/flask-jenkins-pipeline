@@ -10,7 +10,7 @@ class HomeRouteTest(unittest.TestCase):
     def test_home_status_and_body(self):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.get_data(as_text=True), "Hello, Jenkins CI/CD!")
+        self.assertEqual(response.get_data(as_text=True), "WRONG RESPONSE")
 
 
 if __name__ == "__main__":
